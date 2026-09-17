@@ -265,9 +265,6 @@ body{
 .iconbtn.onmedia .ic-play{ display:none }
 .iconbtn.onmedia[aria-pressed="true"] .ic-play{ display:block }
 .iconbtn.onmedia[aria-pressed="true"] .ic-pause{ display:none }
-@media (prefers-reduced-motion: reduce){
-  .hero-video, #btn-hero-motion{ display:none }
-}
 .wordmark{ font:700 var(--fs-display)/var(--lh-display) var(--font-brand); letter-spacing:-0.015em; margin:0; color:var(--on-media) }
 .wordmark.sm{ font-size:17px; line-height:22px; letter-spacing:0.14em; text-transform:uppercase }
 .hero .sub{ font:700 var(--fs-label)/var(--lh-label) var(--font-sans); color:var(--on-media); margin:0 }
@@ -660,8 +657,10 @@ body{
       <div class="scroll" id="home-scroll">
         <div class="hero" id="hero" style="min-height:720px; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; text-align:center; padding:0 var(--space-4) var(--space-8)">
           <!-- Ambient garden loop. Muted and decorative, so it is hidden from
-               assistive tech; the poster (and the hero background) is the
-               same still, which is all that reduced-motion users get. -->
+               assistive tech. It autoplays for everyone (Rustam's call,
+               2026-09-17); the pause button is the accommodation, and the
+               poster / hero background is the same still for when the file
+               is missing or the browser refuses to autoplay. -->
           <video class="hero-video" id="hero-video" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
             <source src="hero.mp4" type="video/mp4">
           </video>
@@ -3024,16 +3023,15 @@ $('#img-bonsai').style.backgroundImage    = 'url(' + IMG['bonsai'] + ')';
 $('#img-pond').style.backgroundImage      = 'url(' + IMG['gate'] + ')';
 $('#img-lantern').style.backgroundImage   = 'url(' + IMG['store'] + ')';
 
-/* hero video: the island still doubles as poster and as the reduced-motion
-   fallback. The loop is decorative, but it runs longer than five seconds, so
-   WCAG 2.2.2 wants a way to stop it — that is the pause button. */
+/* hero video: the island still doubles as poster and as the fallback. The
+   loop is decorative, but it runs longer than five seconds, so WCAG 2.2.2
+   wants a way to stop it — that is the pause button. It deliberately does
+   NOT hide itself for prefers-reduced-motion: the video is the opening of
+   the site, and the pause control is one tap away. */
 (function(){
   var v = $('#hero-video'), btn = $('#btn-hero-motion');
   if(!v || !btn) return;
   v.poster = IMG['island'];
-  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches){
-    v.remove(); btn.remove(); return;
-  }
   function paint(){
     var paused = v.paused;
     btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
@@ -3054,9 +3052,12 @@ $('#img-lantern').style.backgroundImage   = 'url(' + IMG['store'] + ')';
   document.addEventListener('pointerdown', nudge, true);
   v.addEventListener('play', paint);
   v.addEventListener('pause', paint);
-  /* if the file is missing (or autoplay is blocked) the poster stays, so
-     the hero degrades to the old static photo */
-  v.addEventListener('error', function(){ v.remove(); btn.remove(); }, true);
+  /* only if the file itself cannot be loaded does the hero degrade to the
+     static photo — a refused autoplay is not an error, the poster just waits */
+  v.addEventListener('error', function(){
+    if(v.networkState === 3 /* NETWORK_NO_SOURCE */){ v.remove(); btn.remove(); }
+  }, true);
+  v.play().catch(function(){});
   paint();
 })();
 
