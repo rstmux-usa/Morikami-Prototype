@@ -177,6 +177,17 @@ body{
   background:var(--surface-page); padding:12px var(--space-4) 24px;
   display:flex; flex-direction:column; gap:var(--space-3);
 }
+/* ── bottom back ───────────────────────────────────────────────────
+   Back sits in the footer, not the app bar: on a 440-wide phone the
+   top-left corner is the hardest place for a thumb to reach, and the
+   footer is free now that the bottom nav is gone. Paired with the
+   primary action in one row so the footer stays one row tall.      */
+.footer-row{ display:flex; align-items:stretch; gap:var(--space-3) }
+.footer-row > .btn{ min-width:0 }
+.footer-row > .grow{ flex:1 1 auto; width:auto }
+.btn.back{ flex:0 0 auto; width:auto; padding:0 var(--space-4) 0 var(--space-3); color:var(--text-muted) }
+.btn.back svg{ flex:0 0 auto }
+
 .footer-total{ display:flex; align-items:baseline; justify-content:space-between }
 .footer-total .cnt{ font:400 var(--fs-caption)/var(--lh-caption) var(--font-sans); color:var(--text-muted) }
 .footer-total .amt{ font:700 var(--fs-h3)/var(--lh-h3) var(--font-sans); color:var(--text-heading) }
@@ -689,11 +700,6 @@ body{
     <section class="screen" id="s-hours" data-title="Hours &amp; Admission" data-media="1">
       <div class="scroll">
         <div class="hero" id="hero-aerial" style="min-height:420px; display:flex; flex-direction:column; justify-content:flex-end; padding:0 var(--space-4) var(--space-6)">
-          <div class="header-actions" style="left:16px; right:auto">
-            <button class="iconbtn" style="color:#fff; background:rgba(0,0,0,.28)" data-back aria-label="Back">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            </button>
-          </div>
           <p class="wordmark sm">Morikami</p>
           <p class="caption" style="color:var(--on-media-muted); margin-top:var(--space-4)">Plan your visit</p>
           <h2 class="h1-lg" style="color:#fff; margin-top:var(--space-1)">Hours &amp; Admission</h2>
@@ -755,6 +761,11 @@ body{
           <button class="btn primary block" style="margin-top:var(--space-4)" data-go="date">Buy Tickets</button>
         </section>
       </div>
+      <div class="footer-action">
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ 04 SELECT DATE ═══ -->
@@ -804,16 +815,17 @@ body{
         </div>
       </div>
       <div class="footer-action">
-        <button class="btn primary block" id="date-continue" disabled>Choose tickets</button>
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="date-continue" disabled>Choose tickets</button>
+        </div>
       </div>
     </section>
 
     <!-- ═══ 13 LOADING ═══ -->
     <section class="screen" id="s-loading" data-title="Choose tickets" data-step="2">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Choose tickets</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -835,15 +847,18 @@ body{
           <p class="caption" role="status">Loading today's prices…</p>
         </div>
       </div>
-      <div class="footer-action"><div class="sk" style="height:48px"></div></div>
+      <div class="footer-action">
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <div class="sk grow" style="height:48px"></div>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ 05 CHOOSE TICKETS ═══ -->
     <section class="screen" id="s-tickets" data-title="Choose tickets" data-step="2">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Choose tickets</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -886,16 +901,17 @@ body{
           <span class="cnt" id="tk-count">No tickets yet</span>
           <span class="amt" id="tk-total">$0.00</span>
         </div>
-        <button class="btn primary block" id="tickets-continue" disabled>Review order</button>
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="tickets-continue" disabled>Review order</button>
+        </div>
       </div>
     </section>
 
     <!-- ═══ 05a ACCESSIBILITY ═══ -->
     <section class="screen" id="s-access" data-title="Accessibility" data-step="2">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Accessibility</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -936,15 +952,18 @@ body{
           </div>
         </div>
       </div>
-      <div class="footer-action"><button class="btn primary block" data-go="tickets-back">Continue</button></div>
+      <div class="footer-action">
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" data-go="tickets-back">Continue</button>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ 06 MEMBER SIGN IN ═══ -->
     <section class="screen" id="s-signin" data-title="Member sign in">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Sign in</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -974,15 +993,18 @@ body{
           </div>
         </div>
       </div>
-      <div class="footer-action"><button class="btn primary block" id="signin-submit">Sign in</button></div>
+      <div class="footer-action">
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="signin-submit">Sign in</button>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ 07 / 12 REVIEW ORDER ═══ -->
     <section class="screen" id="s-review" data-title="Review order" data-step="3">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Review order</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -1036,16 +1058,17 @@ body{
         <div class="footer-total" id="rv-footer-total" style="display:none">
           <span class="cnt" id="rv-count">—</span><span class="amt" id="rv-amount">$0.00</span>
         </div>
-        <button class="btn primary block" id="review-continue">Continue to payment</button>
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="review-continue">Continue to payment</button>
+        </div>
       </div>
     </section>
 
     <!-- ═══ 08 PAYMENT ═══ -->
     <section class="screen" id="s-payment" data-title="Payment" data-step="4">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Payment</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -1115,7 +1138,10 @@ body{
         </div>
       </div>
       <div class="footer-action">
-        <button class="btn primary block" id="pay-submit">Pay $0.00</button>
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="pay-submit">Pay $0.00</button>
+        </div>
       </div>
     </section>
 
@@ -1157,9 +1183,7 @@ body{
     <!-- ═══ 15 GROUP VISIT ═══ -->
     <section class="screen" id="s-group" data-title="Group visit">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Group visit</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -1191,7 +1215,10 @@ body{
         </div>
       </div>
       <div class="footer-action">
-        <button class="btn primary block" data-go="group-form">Request a group booking</button>
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" data-go="group-form">Request a group booking</button>
+        </div>
         <button class="btn neutral block" data-unbuilt="Email">Email the coordinator</button>
       </div>
     </section>
@@ -1199,9 +1226,7 @@ body{
     <!-- ═══ 15a GROUP REQUEST FORM ═══ -->
     <section class="screen" id="s-group-form" data-title="Group request">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2>Group request</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
@@ -1250,7 +1275,12 @@ body{
           </div>
         </div>
       </div>
-      <div class="footer-action"><button class="btn primary block" id="group-send">Send request</button></div>
+      <div class="footer-action">
+        <div class="footer-row">
+          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn primary grow" id="group-send">Send request</button>
+        </div>
+      </div>
     </section>
 
     <!-- ═══ 15b GROUP REQUEST SENT ═══ -->
@@ -1307,9 +1337,7 @@ body{
     <!-- ═══ 16 NOT BUILT YET ═══ -->
     <section class="screen" id="s-unbuilt" data-title="We're building this page">
       <header class="appbar">
-        <button class="iconbtn dark" data-back aria-label="Back">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
+        <div style="width:48px"></div>
         <h2 id="ub-title">—</h2>
         <button class="iconbtn" data-exit aria-label="Close">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
