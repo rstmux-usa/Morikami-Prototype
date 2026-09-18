@@ -185,7 +185,7 @@ body{
 .footer-row{ display:flex; align-items:stretch; gap:var(--space-3) }
 .footer-row > .btn{ min-width:0 }
 .footer-row > .grow{ flex:1 1 auto; width:auto }
-.btn.back{ flex:0 0 auto; width:auto; padding:0 var(--space-4) 0 var(--space-3); color:var(--text-muted) }
+.btn.back{ flex:0 0 auto; width:var(--target); padding:0; color:var(--text-muted) }
 .btn.back svg{ flex:0 0 auto }
 
 .footer-total{ display:flex; align-items:baseline; justify-content:space-between }
@@ -763,7 +763,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
         </div>
       </div>
     </section>
@@ -816,7 +816,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="date-continue" disabled>Choose tickets</button>
         </div>
       </div>
@@ -849,7 +849,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <div class="sk grow" style="height:48px"></div>
         </div>
       </div>
@@ -902,7 +902,7 @@ body{
           <span class="amt" id="tk-total">$0.00</span>
         </div>
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="tickets-continue" disabled>Review order</button>
         </div>
       </div>
@@ -954,7 +954,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" data-go="tickets-back">Continue</button>
         </div>
       </div>
@@ -995,7 +995,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="signin-submit">Sign in</button>
         </div>
       </div>
@@ -1059,7 +1059,7 @@ body{
           <span class="cnt" id="rv-count">—</span><span class="amt" id="rv-amount">$0.00</span>
         </div>
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="review-continue">Continue to payment</button>
         </div>
       </div>
@@ -1139,7 +1139,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="pay-submit">Pay $0.00</button>
         </div>
       </div>
@@ -1216,7 +1216,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" data-go="group-form">Request a group booking</button>
         </div>
         <button class="btn neutral block" data-unbuilt="Email">Email the coordinator</button>
@@ -1277,7 +1277,7 @@ body{
       </div>
       <div class="footer-action">
         <div class="footer-row">
-          <button class="btn neutral back" data-back><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>Back</button>
+          <button class="btn neutral back" data-back aria-label="Back"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
           <button class="btn primary grow" id="group-send">Send request</button>
         </div>
       </div>
