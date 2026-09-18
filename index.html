@@ -1827,6 +1827,9 @@ var SCREENS = {
 function inAccessible(name){ return /^a[1-9]$/.test(name || current); }
 var current = null, stack = [], animating = false;
 var statusbar = $('#statusbar');
+/* Where each screen was scrolled to when we left it. Going back lands
+   you exactly where you were; going forward always starts at the top. */
+var scrollPos = {};
 
 function go(name, dir){
   if(!SCREENS[name] || name === current) return;
@@ -1838,6 +1841,9 @@ function go(name, dir){
 
   if(dir === 'fwd' && current) stack.push(current);
   if(dir === 'back') stack.pop();
+
+  var prevSc = prev ? $('.scroll', prev) : null;
+  if(prevSc) scrollPos[current] = prevSc.scrollTop;
 
   render(name);
 
@@ -1854,7 +1860,7 @@ function go(name, dir){
   }, 260);
 
   var sc = $('.scroll', next);
-  if(sc) sc.scrollTop = 0;
+  if(sc) sc.scrollTop = dir === 'back' ? (scrollPos[name] || 0) : 0;
 
   current = name;
   /* the accessible view runs without the 15-minute hold, by design */
