@@ -1768,12 +1768,25 @@ function freshState(){
   };
 }
 var state = freshState();
-var viewMonth = new Date();
+var viewMonth = museumNow();
 viewMonth.setDate(1);
 
 /* ── date helpers ──────────────────────────────────────────────── */
 function startOfDay(d){ var x = new Date(d); x.setHours(0,0,0,0); return x; }
-var TODAY = startOfDay(new Date());
+/* The museum's own clock. Morikami is in Delray Beach, so "today" and
+   "has this window already happened" are Florida time, whatever time
+   zone the visitor is in. Returns a Date that reads as Florida wall-clock
+   time, so getDate() and getHours() mean the museum's. */
+function museumNow(){
+  try {
+    var p = {};
+    new Intl.DateTimeFormat('en-US', { timeZone:'America/New_York', year:'numeric', month:'numeric',
+      day:'numeric', hour:'numeric', minute:'numeric', hourCycle:'h23' })
+      .formatToParts(new Date()).forEach(function(x){ p[x.type] = Number(x.value); });
+    return new Date(p.year, p.month - 1, p.day, p.hour, p.minute);
+  } catch(e){ return new Date(); }
+}
+var TODAY = startOfDay(museumNow());
 function sameDay(a,b){ return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
 function isClosed(d){ return d.getDay() === 1; }                      /* Mondays */
 function isPast(d){ return startOfDay(d) < TODAY; }
@@ -1794,7 +1807,14 @@ function eventsOn(d){
   return [ { title:'Taiko drumming', when:'2:00pm – 3:00pm · Garden lawn', note:'Included with admission', img:'taiko' } ];
 }
 function windowFull(d, key){ if(!d) return false; return key==='midday' && (d.getDay()===0 || d.getDay()===6); }
-function bookable(d){ return !isPast(d) && !isClosed(d) && !isSoldOut(d); }
+/* A window can be booked until it ends: at 11:30 you can still book
+   10–12 and walk in by noon. Once the last one (2–4) has ended, today is
+   over and the calendar treats it like a past day. */
+var WINDOW_ENDS = { morning:12, midday:14, afternoon:16 };
+function windowPassed(d, key){ if(!d) return false; var now = museumNow(); return sameDay(d, now) && now.getHours() >= WINDOW_ENDS[key]; }
+function windowOpen(d, key){ return !windowFull(d, key) && !windowPassed(d, key); }
+function dayOver(d){ return windowPassed(d, 'afternoon'); }
+function bookable(d){ return !isPast(d) && !isClosed(d) && !dayOver(d) && !isSoldOut(d); }
 function fmtLong(d){ return DAYS[d.getDay()] + ', ' + MONTHS[d.getMonth()] + ' ' + d.getDate(); }
 function fmtShort(d){ return MONTHS[d.getMonth()] + ' ' + d.getDate(); }
 function money(n){ return '$' + n.toFixed(2); }
@@ -1919,6 +1939,7 @@ function renderDate(){
       if(sameDay(d, TODAY)) b.classList.add('today');
       if(isPast(d)){ b.classList.add('past'); b.disabled = true; label += ', in the past'; }
       else if(isClosed(d)){ b.classList.add('closed'); b.disabled = true; label += ', closed'; }
+      else if(dayOver(d)){ b.classList.add('past'); b.disabled = true; label += ', too late to book, last entry was 4 PM'; }
       else if(isSoldOut(d)){ b.classList.add('soldout'); label += ', sold out'; }
       if(sameDay(d, state.date)) b.classList.add('sel');
       if(evs.length) label += ', ' + evs.length + (evs.length === 1 ? ' event' : ' events');
@@ -1953,8 +1974,8 @@ function pickDay(d){
   }
   alert.style.display = 'none';
   state.date = d;
-  if(!state.window || windowFull(d, state.window)){
-    var free = WINDOWS.filter(function(w){ return !windowFull(d, w.k); })[0];
+  if(!state.window || !windowOpen(d, state.window)){
+    var free = WINDOWS.filter(function(w){ return windowOpen(d, w.k); })[0];
     state.window = free ? free.k : null;
   }
   renderDate();
@@ -1968,19 +1989,22 @@ function renderWindows(){
   wrap.innerHTML = '';
   WINDOWS.forEach(function(w){
     var full = windowFull(state.date, w.k);
+    var passed = !full && windowPassed(state.date, w.k);
+    var shut = full || passed;
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'win' + (state.window === w.k && !full ? ' on' : '') + (full ? ' full' : '');
+    b.className = 'win' + (state.window === w.k && !shut ? ' on' : '') + (shut ? ' full' : '');
     b.setAttribute('role', 'radio');
-    b.setAttribute('aria-checked', String(state.window === w.k && !full));
-    if(full) b.setAttribute('aria-disabled', 'true');
+    b.setAttribute('aria-checked', String(state.window === w.k && !shut));
+    if(shut) b.setAttribute('aria-disabled', 'true');
     b.innerHTML =
       '<span class="radio"></span>' +
       '<span><span class="t">' + w.t + '</span><br><span class="m">' +
-        (full ? 'Try another window or another day' : w.m) + '</span></span>' +
-      (full ? '<span class="status">Fully booked</span>' : '');
+        (full ? 'Try another window or another day' : passed ? 'Pick a later window or another day' : w.m) + '</span></span>' +
+      (full ? '<span class="status">Fully booked</span>' : passed ? '<span class="status">Over for today</span>' : '');
     b.addEventListener('click', function(){
       if(full){ toast('That window is fully booked — try another window or another day.'); return; }
+      if(passed){ toast('That window is already over today — pick a later one or another day.'); return; }
       state.window = w.k;
       renderWindows();
       syncDateFooter();
@@ -1992,7 +2016,7 @@ function renderWindows(){
 }
 
 function syncDateFooter(){
-  var ok = !!state.date && !!state.window && !windowFull(state.date, state.window);
+  var ok = !!state.date && !!state.window && windowOpen(state.date, state.window);
   $('#date-continue').disabled = !ok;
   $('#date-continue').textContent = state.date ? 'Choose tickets for ' + fmtShort(state.date) : 'Choose tickets';
 }
@@ -2616,21 +2640,22 @@ function renderAxDate(){
   var d = new Date(TODAY);
   for(var i = 0; i < state.ax.days; i++){
     (function(day){
-      var closed = isClosed(day), sold = isSoldOut(day), evs = eventsOn(day);
+      var closed = isClosed(day), over = !closed && dayOver(day), sold = isSoldOut(day), evs = eventsOn(day);
       var chosen = sameDay(day, state.date);
       var sub = 'Open 10am to 5pm';
       if(closed) sub = 'Closed all day';
+      else if(over) sub = 'Too late for today. Last entry is 4pm';
       else if(sold) sub = 'Sold out — no tickets left';
       else if(evs.length) sub = evs[0].title + ' at ' + evs[0].when.split(' – ')[0] + ' · included';
       if(chosen) sub = 'Chosen · ' + sub.charAt(0).toLowerCase() + sub.slice(1);
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'ax-opt' + (chosen ? ' on' : '');
-      b.disabled = closed || sold;
+      b.disabled = closed || over || sold;
       b.innerHTML = '<span class="col"><span class="t">' + axDate(day) + '</span><span class="s">' + sub + '</span></span>' + (chosen ? AX_CHECK : '');
       b.addEventListener('click', function(){
         state.date = new Date(day);
-        if(state.window && windowFull(state.date, state.window)) state.window = null;
+        if(state.window && !windowOpen(state.date, state.window)) state.window = null;
         renderAxDate();
         announce('Chosen: ' + axDate(day));
       });
@@ -2643,12 +2668,13 @@ function renderAxDate(){
   wins.innerHTML = '';
   AX_WINDOWS.forEach(function(w){
     var full = windowFull(state.date, w.k);
+    var passed = !full && windowPassed(state.date, w.k);
     var chosen = state.window === w.k;
-    var sub = full ? 'Fully booked on this date' : (chosen ? 'Chosen · ' + w.s : w.s.charAt(0).toUpperCase() + w.s.slice(1));
+    var sub = full ? 'Fully booked on this date' : passed ? 'Already over today' : (chosen ? 'Chosen · ' + w.s : w.s.charAt(0).toUpperCase() + w.s.slice(1));
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'ax-opt' + (chosen ? ' on' : '');
-    b.disabled = full;
+    b.disabled = full || passed;
     b.innerHTML = '<span class="col"><span class="t">' + w.t + '</span><span class="s">' + sub + '</span></span>' + (chosen ? AX_CHECK : '');
     b.addEventListener('click', function(){
       state.window = w.k;
@@ -2658,7 +2684,7 @@ function renderAxDate(){
     wins.appendChild(b);
   });
 
-  var ready = !!(state.date && state.window);
+  var ready = !!(state.date && state.window && windowOpen(state.date, state.window));
   $('#ax-chose').textContent = ready
     ? 'You chose ' + axWhen()
     : (state.date ? 'Now say when you will arrive.' : 'Pick a day and an arrival time to carry on.');
@@ -2901,8 +2927,8 @@ $('#fac-panel').addEventListener('click', function(e){
     var d = nextBookable();
     for(var i = 0; i < 60 && !eventsOn(d).length; i++){ d.setDate(d.getDate() + 1); if(!bookable(d)) continue; }
     state.date = new Date(d);
-    if(!state.window || windowFull(state.date, state.window)){
-      var free = WINDOWS.filter(function(w){ return !windowFull(state.date, w.k); })[0];
+    if(!state.window || !windowOpen(state.date, state.window)){
+      var free = WINDOWS.filter(function(w){ return windowOpen(state.date, w.k); })[0];
       state.window = free ? free.k : null;
     }
     viewMonth = new Date(state.date.getFullYear(), state.date.getMonth(), 1);
@@ -2928,7 +2954,7 @@ function nextBookable(){
 function reset(){
   stopHold();
   state = freshState();
-  viewMonth = new Date(); viewMonth.setDate(1);
+  viewMonth = museumNow(); viewMonth.setDate(1);
   ensureMonthHasRoom();
   $$('#ticket-rows .stepper').forEach(function(s){ if(s._paint) s._paint(); });
   ['#rv-name','#rv-email','#rv-promo','#pay-card','#pay-exp','#pay-cvc','#pay-zip','#mem-email','#mem-num','#gr-day','#gr-size','#gr-name','#gr-email','#gr-phone','#access-note','#ax-name','#ax-email','#ax-phone'].forEach(function(s){
