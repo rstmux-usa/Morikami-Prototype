@@ -719,6 +719,8 @@ body{
             <div class="trow between"><span class="body-strong">Tuesday – Sunday</span><span class="body">10:00am – 5:00pm</span></div>
             <div class="trow between"><span class="body-strong">Monday</span><span class="body muted">Closed</span></div>
             <div class="trow between"><span class="body-strong">Last entry</span><span class="body">4:00pm</span></div>
+            <div class="trow between"><span class="body-strong">Yamato-kan villa</span><span class="body muted" id="hr-reno">Closed for renovation</span></div>
+            <div class="trow between"><span class="body-strong">Private event</span><span class="body muted" id="hr-private">Closed one Sunday a month</span></div>
           </div>
 
           <h3 class="h1" style="margin-top:var(--space-8)">Admission</h3>
@@ -806,7 +808,10 @@ body{
               <span><i class="sw" style="background:var(--surface-sunken)"></i>Closed</span>
               <span><i class="sw" style="width:6px;height:6px;background:var(--decorative-bamboo-dot)"></i>Event</span>
             </div>
+            <p class="caption" id="cal-closures" style="margin-top:var(--space-3); display:none"></p>
           </div>
+
+          <div id="closure-inline" style="margin-top:var(--space-4); display:none" aria-live="polite"></div>
 
           <div id="events-inline" style="margin-top:var(--space-6); display:none"></div>
 
@@ -984,7 +989,7 @@ body{
             <div class="field">
               <label class="label" for="mem-num">Membership number</label>
               <input class="input" id="mem-num" placeholder="MK-000000">
-              <p class="caption" id="mem-err" style="display:none; color:var(--feedback-error-text)">Check the number on your card — it looks like MK-000000.</p>
+              <p class="caption" id="mem-err" style="display:none; color:var(--feedback-error-text)">Enter the number on your membership card.</p>
             </div>
             <button class="link" data-unbuilt="Membership lookup">Find my membership number</button>
           </div>
@@ -1027,6 +1032,7 @@ body{
               </div>
               <button class="link" data-go-back-to="date">Edit</button>
             </div>
+            <div id="rv-closure" style="display:none; margin-top:var(--space-4)"></div>
             <hr class="divider" style="margin:var(--space-4) 0">
             <div class="stack" style="gap:var(--space-3)" id="rv-lines"></div>
             <hr class="divider" style="margin:var(--space-4) 0">
@@ -1044,7 +1050,7 @@ body{
               <label class="label" for="rv-email">Email</label>
               <input class="input" id="rv-email" type="email" placeholder="you@example.com" autocomplete="email">
               <p class="caption">Your tickets arrive here as a QR code.</p>
-              <p class="err" id="rv-email-err" style="display:none">Check the email address — we need it to send your tickets.</p>
+              <p class="err" id="rv-email-err" style="display:none">Add an email address so we can send your tickets.</p>
             </div>
             <div class="field">
               <label class="label" for="rv-promo">Promo code</label>
@@ -1173,6 +1179,10 @@ body{
           </div>
           <div class="card pad" style="margin-top:var(--space-8); text-align:left">
             <p class="body-strong">Before you come</p>
+            <div class="row" id="cf-closure" style="display:none; gap:var(--space-3); margin-top:var(--space-3); align-items:flex-start; border-top:var(--border-width-hairline) solid var(--border-hairline); padding-top:var(--space-3)">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--feedback-info-icon)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7" fill="var(--feedback-info-icon)"/></svg>
+              <p class="body" id="cf-closure-text"></p>
+            </div>
             <p class="body" style="margin-top:var(--space-2)">Free parking on site. Allow ninety minutes for the gardens, galleries and bonsai terrace. The café closes at 4:00pm.</p>
           </div>
           <div class="row" id="cf-access" style="display:none; gap:var(--space-3); margin-top:var(--space-4); align-items:flex-start; text-align:left; border-top:var(--border-width-hairline) solid var(--border-hairline); padding-top:var(--space-4)">
@@ -1265,7 +1275,7 @@ body{
               <label class="label" for="gr-email">Email</label>
               <input class="input" id="gr-email" type="email" placeholder="you@example.com" autocomplete="email">
               <p class="caption">This is where we'll reply.</p>
-              <p class="err" id="gr-email-err" style="display:none">Check the email address so our reply reaches you.</p>
+              <p class="err" id="gr-email-err" style="display:none">Add an email address so our reply reaches you.</p>
             </div>
             <div class="field">
               <label class="label" for="gr-phone">Phone (optional)</label>
@@ -1499,7 +1509,7 @@ body{
               <label for="ax-email">Email address</label>
               <input class="ax-input" id="ax-email" type="email" autocomplete="email" placeholder="m.ellis@example.com">
               <p class="ax-sub">Your ticket goes here. We will not add you to anything.</p>
-              <p class="ax-err" id="ax-email-err" style="display:none">Please check the email address — it needs an @ and a full stop.</p>
+              <p class="ax-err" id="ax-email-err" style="display:none">Please give an email address, so we can send your ticket.</p>
             </div>
             <div class="ax-field">
               <label for="ax-phone">Phone number — optional</label>
@@ -1588,6 +1598,10 @@ body{
             <div class="ax-qr">QR code</div>
             <p class="ax-lead">Or just read this out:</p>
             <p class="ax-code" id="ax-code">MK-4823</p>
+          </div>
+          <div class="ax-card info" id="ax-closure" style="display:none">
+            <p class="ax-h2">Before you come</p>
+            <p class="ax-lead" style="margin-top:var(--space-2)" id="ax-closure-text"></p>
           </div>
           <div class="ax-card">
             <p class="ax-h2">At the admissions desk</p>
@@ -1700,6 +1714,7 @@ body{
     <button data-sim="decline">Card declined on next payment</button>
     <button data-sim="expire">Session timed out now</button>
     <button data-sim="sheet">Pick a date that has an event</button>
+    <button data-sim="closure">Pick a date with something closed</button>
     <button data-sim="a11y">Open the accessible view (A01)</button>
     <button data-sim="reset">Reset the prototype</button>
     <p class="fac-note">Press <b>?</b> to show or hide this panel. Card 4000&nbsp;… declines; anything else is approved.</p>
@@ -1788,7 +1803,24 @@ function museumNow(){
 }
 var TODAY = startOfDay(museumNow());
 function sameDay(a,b){ return a && b && a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
-function isClosed(d){ return d.getDay() === 1; }                      /* Mondays */
+function isClosed(d){ return d.getDay() === 1 || isPrivateEvent(d); }  /* Mondays, and private events */
+/* ── closures: what's shut on a given day ─────────────────────────
+   In reviews, visitors said they paid, walked in, and only then found the
+   villa or the galleries shut. So the day says so before anyone pays.
+   Two kinds. A private event closes the whole day, like a Monday. A part
+   closure leaves the day bookable and says what's shut, what's open and
+   when it reopens. Both sit relative to today, so there's always one to show. */
+function addDays(d, n){ var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function isPrivateEvent(d){ return d.getDay() === 0 && d.getDate() >= 15 && d.getDate() <= 21; }   /* third Sunday */
+var RENO_FROM = addDays(TODAY, 7), RENO_TO = addDays(TODAY, 27);
+function nextOpenDay(d){ var x = addDays(d, 1); while(isClosed(x)) x = addDays(x, 1); return x; }
+function partClosure(d){
+  if(!d) return null;
+  var x = startOfDay(d);
+  if(x < RENO_FROM || x > RENO_TO) return null;
+  return { what:'The Yamato-kan villa', short:'Yamato-kan villa', why:'renovation', reopens:nextOpenDay(RENO_TO) };
+}
+var INFO_ICO = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".7" fill="currentColor"/></svg>';
 function isPast(d){ return startOfDay(d) < TODAY; }
 function lastSaturday(y,m){
   var d = new Date(y, m+1, 0);
@@ -1938,11 +1970,12 @@ function renderDate(){
       var label = day + ' ' + MONTHS[d.getMonth()];
       if(sameDay(d, TODAY)) b.classList.add('today');
       if(isPast(d)){ b.classList.add('past'); b.disabled = true; label += ', in the past'; }
-      else if(isClosed(d)){ b.classList.add('closed'); b.disabled = true; label += ', closed'; }
+      else if(isClosed(d)){ b.classList.add('closed'); b.disabled = true; label += isPrivateEvent(d) ? ', closed for a private event' : ', closed'; }
       else if(dayOver(d)){ b.classList.add('past'); b.disabled = true; label += ', too late to book, last entry was 4 PM'; }
       else if(isSoldOut(d)){ b.classList.add('soldout'); label += ', sold out'; }
       if(sameDay(d, state.date)) b.classList.add('sel');
       if(evs.length) label += ', ' + evs.length + (evs.length === 1 ? ' event' : ' events');
+      if(!b.disabled && partClosure(d)) label += ', ' + partClosure(d).short + ' closed';
       b.setAttribute('aria-label', label);
       b.innerHTML = '<span class="num">' + day + '</span>' +
         (evs.length ? '<span class="evt">' + evs.map(function(){ return '<i></i>'; }).join('') + '</span>' : '');
@@ -1954,9 +1987,31 @@ function renderDate(){
   void grid.offsetWidth;
   grid.classList.add('swap');
   $('#cal-prev').disabled = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 1) <= new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
+  renderClosures();
   renderEventsInline();
   renderWindows();
   syncDateFooter();
+}
+
+function renderClosures(){
+  /* whole days closed for a private event this month, in words under the legend */
+  var cap = $('#cal-closures'), days = [];
+  var n = new Date(viewMonth.getFullYear(), viewMonth.getMonth() + 1, 0).getDate();
+  for(var i = 1; i <= n; i++){
+    var d = new Date(viewMonth.getFullYear(), viewMonth.getMonth(), i);
+    if(isPrivateEvent(d) && !isPast(d)) days.push(d);
+  }
+  cap.style.display = days.length ? '' : 'none';
+  cap.textContent = days.length ? 'Also closed ' + days.map(fmtLong).join(' and ') + ', for a private event.' : '';
+  /* part of the museum shut on the chosen day */
+  var host = $('#closure-inline'), pc = partClosure(state.date);
+  host.style.display = pc ? '' : 'none';
+  host.innerHTML = pc
+    ? '<div class="alert info">' + INFO_ICO +
+        '<div><h4>' + pc.what + ' is closed on ' + fmtShort(state.date) + '</h4>' +
+        '<p>It reopens on ' + fmtLong(pc.reopens) + ', after ' + pc.why + '. The gardens, the main galleries and the bonsai terrace are open as usual.</p></div>' +
+      '</div>'
+    : '';
 }
 
 function pickDay(d){
@@ -1981,7 +2036,9 @@ function pickDay(d){
   renderDate();
   startHold();
   var evs = eventsOn(d);
-  announce(fmtLong(d) + ' selected' + (evs.length ? ' — ' + evs.length + (evs.length === 1 ? ' event on this day' : ' events on this day') : ''));
+  var pc = partClosure(d);
+  announce(fmtLong(d) + ' selected' + (evs.length ? ' — ' + evs.length + (evs.length === 1 ? ' event on this day' : ' events on this day') : '') +
+    (pc ? '. ' + pc.what + ' is closed that day' : ''));
 }
 
 function renderWindows(){
@@ -2207,6 +2264,14 @@ function lineHTML(x){
 function renderReview(){
   $('#rv-date').textContent = state.date ? fmtLong(state.date) : '—';
   $('#rv-window').textContent = state.window ? 'Arriving ' + windowText(state.window) : '';
+  var rpc = partClosure(state.date), rc = $('#rv-closure');
+  rc.style.display = rpc ? '' : 'none';
+  rc.innerHTML = rpc
+    ? '<div class="alert info">' + INFO_ICO +
+        '<div><h4>' + rpc.what + ' is closed that day</h4>' +
+        '<p>Everything else is open. If it’s the villa you’re coming for, it reopens on ' + fmtShort(rpc.reopens) + '.</p></div>' +
+      '</div>'
+    : '';
   $('#rv-lines').innerHTML = ticketLines().concat(accessLines()).map(lineHTML).join('');
 
   var t = $('#rv-totals');
@@ -2315,6 +2380,9 @@ function completeOrder(){
 function renderConfirm(){
   $('#cf-date').textContent = state.date ? fmtLong(state.date) : '—';
   $('#cf-window').textContent = state.window ? 'Arriving ' + windowText(state.window) : '';
+  var cpc = partClosure(state.date), cc = $('#cf-closure');
+  cc.style.display = cpc ? '' : 'none';
+  $('#cf-closure-text').textContent = cpc ? cpc.what + ' is closed for ' + cpc.why + ' that day. The gardens, galleries and bonsai terrace are open.' : '';
   var n = ticketCount();
   $('#cf-summary').textContent = n + (n === 1 ? ' ticket · ' : ' tickets · ') + money(grandTotal());
   $('#cf-order').textContent = 'Order ' + (state.order || '—');
@@ -2481,7 +2549,7 @@ $('#tickets-continue').addEventListener('click', function(){ go('review', 'fwd')
 
 $('#signin-submit').addEventListener('click', function(){
   var num = $('#mem-num').value.trim();
-  var ok = /^MK-?\d{6}$/i.test(num);
+  var ok = num.length > 0;   /* a prototype: any number signs you in */
   $('#mem-err').style.display = ok ? 'none' : '';
   $('#mem-num').classList.toggle('error', !ok);
   if(!ok){ $('#mem-num').focus(); return; }
@@ -2510,8 +2578,9 @@ $('#rv-apply').addEventListener('click', function(){
 $('#review-continue').addEventListener('click', function(){
   state.name = $('#rv-name').value.trim();
   state.email = $('#rv-email').value.trim();
-  var nameOK = state.name.length > 1;
-  var mailOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email);
+  /* a prototype: anything typed is accepted; only an empty field stops you */
+  var nameOK = state.name.length > 0;
+  var mailOK = state.email.length > 0;
   $('#rv-name-err').style.display = nameOK ? 'none' : '';
   $('#rv-name').classList.toggle('error', !nameOK);
   $('#rv-email-err').style.display = mailOK ? 'none' : '';
@@ -2523,21 +2592,25 @@ $('#review-continue').addEventListener('click', function(){
 });
 
 $('#pay-submit').addEventListener('click', function(){
+  /* a prototype: any card number goes through (one starting 4000 declines) */
   var card = $('#pay-card').value.replace(/\s/g, '');
-  var ok = card.length >= 15 && /^\d+$/.test(card);
+  var ok = card.length > 0;
   $('#pay-card').classList.toggle('error', !ok);
   $('#pay-card-err').style.display = ok ? 'none' : '';
-  $('#pay-card-err').textContent = 'Enter the 16 digits on the front of your card.';
+  $('#pay-card-err').textContent = 'Enter a card number.';
   if(!ok){ $('#pay-card').focus(); return; }
   $('#pay-card-err').textContent = 'Check this number, then try again.';
   processPayment('card');
 });
 
+/* Digits get grouped as you type; anything else is left exactly as typed. */
 $('#pay-card').addEventListener('input', function(){
-  var v = this.value.replace(/\D/g, '').slice(0, 16);
+  if(/[^\d\s]/.test(this.value)) return;
+  var v = this.value.replace(/\D/g, '').slice(0, 19);
   this.value = v.replace(/(.{4})/g, '$1 ').trim();
 });
 $('#pay-exp').addEventListener('input', function(){
+  if(/[^\d\s\/]/.test(this.value)) return;
   var v = this.value.replace(/\D/g, '').slice(0, 4);
   this.value = v.length > 2 ? v.slice(0, 2) + ' / ' + v.slice(2) : v;
 });
@@ -2546,7 +2619,7 @@ $('#group-send').addEventListener('click', function(){
   var size = parseInt($('#gr-size').value, 10);
   var mail = $('#gr-email').value.trim();
   var sizeOK = !isNaN(size) && size >= 15;
-  var mailOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
+  var mailOK = mail.length > 0;
   $('#gr-size-err').style.display = sizeOK ? 'none' : '';
   $('#gr-size').classList.toggle('error', !sizeOK);
   $('#gr-email-err').style.display = mailOK ? 'none' : '';
@@ -2643,10 +2716,12 @@ function renderAxDate(){
       var closed = isClosed(day), over = !closed && dayOver(day), sold = isSoldOut(day), evs = eventsOn(day);
       var chosen = sameDay(day, state.date);
       var sub = 'Open 10am to 5pm';
-      if(closed) sub = 'Closed all day';
+      if(closed) sub = isPrivateEvent(day) ? 'Closed all day for a private event' : 'Closed all day';
       else if(over) sub = 'Too late for today. Last entry is 4pm';
       else if(sold) sub = 'Sold out — no tickets left';
       else if(evs.length) sub = evs[0].title + ' at ' + evs[0].when.split(' – ')[0] + ' · included';
+      var apc = !closed && !over && !sold && partClosure(day);
+      if(apc) sub = 'Open, but the ' + apc.short + ' is closed';
       if(chosen) sub = 'Chosen · ' + sub.charAt(0).toLowerCase() + sub.slice(1);
       var b = document.createElement('button');
       b.type = 'button';
@@ -2795,9 +2870,11 @@ function renderAxReview(){
   var host = $('#ax-review');
   host.innerHTML = '';
   var rows = [
-    { label:'Coming on', value:axWhen(), sub:'Any time between 10am and 5pm', to:'a2' },
+    { label:'Coming on', value:axWhen(), sub:'Once you are inside, stay until we close at 5pm.', to:'a2' },
     { label:'People', value:axPeople().join(', ') || 'None chosen', sub:axAmounts() || 'Nothing to pay yet', to:'a3' }
   ];
+  var xpc = partClosure(state.date);
+  if(xpc) rows.splice(1, 0, { label:'Closed that day', value:xpc.what, sub:'Everything else is open. It reopens ' + axDate(xpc.reopens) + '.', to:'a2' });
   var ready = axReadyLine();
   if(ready.length) rows.push({ label:'We will have ready', value:ready[0].charAt(0).toUpperCase() + ready[0].slice(1), sub:ready.length > 1 ? 'Also: ' + ready.slice(1).join(', ') : 'Free — collect at the admissions desk', to:'a4' });
   rows.push({ label:'Ticket goes to', value:state.name || 'Not given yet', sub:state.email || 'No email yet', to:'a5' });
@@ -2839,6 +2916,9 @@ function renderAxDone(){
   if(!state.ax.code) state.ax.code = 'MK-' + (1000 + Math.floor(Math.random() * 8999));
   $('#ax-code').textContent = state.ax.code;
   $('#ax-reserved').textContent = 'Reserved for ' + axWhen();
+  var dpc = partClosure(state.date);
+  $('#ax-closure').style.display = dpc ? '' : 'none';
+  $('#ax-closure-text').textContent = dpc ? dpc.what + ' is closed on ' + axDate(state.date) + '. The gardens, the galleries and the bonsai terrace are open.' : '';
   $('#ax-desk-say').innerHTML = 'Say: <b>"I reserved online under ' + (state.name || 'your name') + '."</b>';
   $('#ax-desk-pay').textContent = 'You will pay ' + money(grandTotal()) + ' there' +
     (state.access.wheelchair
@@ -2869,14 +2949,14 @@ $('#ax-name').addEventListener('input', function(){ state.name = this.value; });
 $('#ax-email').addEventListener('input', function(){ state.email = this.value; });
 $('#ax-phone').addEventListener('input', function(){ state.ax.phone = this.value; });
 $('#ax-a5-cont').addEventListener('click', function(){
-  var nameOK = state.name.trim().length > 1;
-  var mailOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email.trim());
+  var nameOK = state.name.trim().length > 0;
+  var mailOK = state.email.trim().length > 0;
   $('#ax-name-err').style.display = nameOK ? 'none' : '';
   $('#ax-name').classList.toggle('error', !nameOK);
   $('#ax-email-err').style.display = mailOK ? 'none' : '';
   $('#ax-email').classList.toggle('error', !mailOK);
   if(!nameOK){ $('#ax-name').focus(); announce('Please tell us the name for the desk'); return; }
-  if(!mailOK){ $('#ax-email').focus(); announce('Please check the email address'); return; }
+  if(!mailOK){ $('#ax-email').focus(); announce('Please give an email address'); return; }
   go('a6', 'fwd');
 });
 $('#ax-reserve').addEventListener('click', function(){
@@ -2930,6 +3010,18 @@ $('#fac-panel').addEventListener('click', function(e){
     if(!state.window || !windowOpen(state.date, state.window)){
       var free = WINDOWS.filter(function(w){ return windowOpen(state.date, w.k); })[0];
       state.window = free ? free.k : null;
+    }
+    viewMonth = new Date(state.date.getFullYear(), state.date.getMonth(), 1);
+    go('date', 'fwd');
+  }
+  if(sim === 'closure'){
+    /* jump to the date screen on a day when part of the museum is shut */
+    var c = nextBookable();
+    for(var j = 0; j < 60 && !(bookable(c) && partClosure(c)); j++) c.setDate(c.getDate() + 1);
+    state.date = new Date(c);
+    if(!state.window || !windowOpen(state.date, state.window)){
+      var fr = WINDOWS.filter(function(w){ return windowOpen(state.date, w.k); })[0];
+      state.window = fr ? fr.k : null;
     }
     viewMonth = new Date(state.date.getFullYear(), state.date.getMonth(), 1);
     go('date', 'fwd');
@@ -3002,6 +3094,13 @@ renderAccess();
 fit();
 go('home', 'up');
 paintFacilitator();
+(function(){
+  function md(d){ return MONTHS[d.getMonth()].slice(0, 3) + ' ' + d.getDate(); }
+  $('#hr-reno').textContent = 'Closed ' + md(RENO_FROM) + ' – ' + md(RENO_TO);
+  var d = new Date(TODAY);
+  for(var i = 0; i < 40 && !isPrivateEvent(d); i++) d = addDays(d, 1);
+  $('#hr-private').textContent = 'Closed ' + DAYS[d.getDay()].slice(0, 3) + ', ' + md(d);
+})();
 })();
 </script>
 
